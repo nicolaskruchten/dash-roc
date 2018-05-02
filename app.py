@@ -49,7 +49,7 @@ def update_charts(goodness, skew, threshold):
         xbins=dict( start=-10.0, end=10, size=0.5 )
     )
 
-    return [
+    return html.Div([
         html.Div([
             dcc.Graph(id='classes', figure=dict(
                 data = [
@@ -59,7 +59,10 @@ def update_charts(goodness, skew, threshold):
                 layout = go.Layout(
                     barmode='overlay',
                     xaxis=dict( range=[-10, 10] ),
-                    yaxis=dict( range=[0, 200] )
+                    yaxis=dict( range=[0, 200] ),
+                    width=400, height=400, autosize=False,
+                    legend=dict(orientation="h"),
+                    margin=go.Margin(l=40, t=40)
                 )
             )),
             dcc.Graph(id='rates', figure=dict(
@@ -68,8 +71,11 @@ def update_charts(goodness, skew, threshold):
                     go.Scatter(x=df.score, y=df.fpr),
                 ],
                 layout = go.Layout(
-                    xaxis=dict( range=[-10, 10] ),
-                    yaxis=dict( range=[0, 1] )
+                    xaxis=dict( range=[-10, 10], zeroline=False ),
+                    yaxis=dict( range=[0, 1]),
+                    width=400, height=400, autosize=False,
+                    legend=dict(orientation="h"),
+                    margin=go.Margin(l=40, t=40)
                 )
             )),
             ], style={'columnCount': 2}),
@@ -80,7 +86,10 @@ def update_charts(goodness, skew, threshold):
                 ],
                 layout = go.Layout(
                     xaxis=dict( range=[0, 1] ),
-                    yaxis=dict( range=[0, 1] )
+                    yaxis=dict( range=[0, 1] ),
+                    width=400, height=400, autosize=False,
+                    legend=dict(orientation="h"),
+                    margin=go.Margin(l=40, t=40)
                 )
             )),
             dcc.Graph(id='confusion', figure=dict(
@@ -88,10 +97,15 @@ def update_charts(goodness, skew, threshold):
                     go.Pie(labels=['tp','fp','tn','fn'],
                         values=df.iloc[threshold][['tp','fp','tn','fn']],
                         sort=False)
-                ]
+                ],
+                layout = go.Layout(
+                    width=400, height=400, autosize=False,
+                    legend=dict(orientation="h"),
+                    margin=go.Margin(l=40, t=40)
+                    )
             )),
             ], style={'columnCount': 2})
-        ]
+        ], style={'width': "600px"})
 
 
 if __name__ == '__main__':
